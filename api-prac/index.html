@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <img src="#">
+  <button type="button" id="apiButton">CLICK TO CHANGE GIF</button>
+  <script>
+    const img = document.querySelector('img');
+   const button = document.querySelector("#apiButton")
+  button.addEventListener("click",(e)=>{
+    fetch('https://api.giphy.com/v1/gifs/translate?api_key=3AwGiMq6h7HRt7YIYDeQsbx7hPUiTVOk&s=cats', {mode: 'cors'})
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      img.src = response.data.images.original.url;
+    });
+  })
+    
+  </script>
+
+
+</body>
+
+</html>
