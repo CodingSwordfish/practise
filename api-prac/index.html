@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <style>
     .gif-container {
@@ -18,7 +18,6 @@
       /* Center the GIF horizontally */
       align-items: center;
       /* Center the GIF vertically */
-
     }
 
     .gif-container img {
@@ -32,43 +31,84 @@
 
 <body>
   <div class="gif-container">
-    <img src="#" alt="gif">
+    <img src="#" alt="gif" />
   </div>
   <button type="button" id="apiButton">CLICK TO CHANGE GIF</button>
+  <br>
+  <label for="search">Search for a gif:</label>
+  <input type="text" id="search" />
+  <button type="button" id="searchButton">SEARCH GIF</button>
+  <br>
+  <button type="reset" id="resetButton">CLEAR</button>
   <script>
+    const searchInput = document.getElementById("search");
+    const searchButton = document.getElementById("searchButton");
+    const resetButton = document.getElementById("resetButton");
+    const img = document.querySelector("img");
+    const searchString = searchInput.value;
     function fetchAndDisplayGif() {
-      const img = document.querySelector('img');
 
-      fetch('https://api.giphy.com/v1/gifs/translate?api_key=3AwGiMq6h7HRt7YIYDeQsbx7hPUiTVOk&s=cats', { mode: 'cors' })
-        .then(response => {
+
+      fetch(
+        "https://api.giphy.com/v1/gifs/translate?api_key=3AwGiMq6h7HRt7YIYDeQsbx7hPUiTVOk&s=cats",
+        { mode: "cors" }
+      )
+        .then((response) => {
           if (!response.ok) {
-            throw new Error(`API request failed with status: ${response.status}`);
+            throw new Error(
+              `API request failed with status: ${response.status}`
+            );
           }
           return response.json();
         })
         .then(function (response) {
-
           img.src = response.data.images.original.url;
         })
 
-        .catch(error => {
-          console.error('Error fetching GIF:', error);
+        .catch((error) => {
+          console.error("Error fetching GIF:", error);
           // Handle the error here, e.g. display an error message to the user
-          img.src = 'sonic.jpg'; // Set a placeholder image
+          img.src = "sonic.jpg"; // Set a placeholder image
+        });
+    }
+
+    function searchAndDisplayGif() {
+
+      fetch(
+        "https://api.giphy.com/v1/gifs/translate?api_key=3AwGiMq6h7HRt7YIYDeQsbx7hPUiTVOk&s=" +
+        searchString,
+        { mode: "cors" }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `API request failed with status: ${response.status}`
+            );
+          }
+          return response.json();
+        })
+        .then(function (response) {
+          img.src = response.data.images.original.url;
+        })
+
+        .catch((error) => {
+          console.error("Error fetching GIF:", error);
+          // Handle the error here, e.g. display an error message to the user
+          img.src = "sonic.jpg"; // Set a placeholder image
         });
     }
 
     // Call the function on window load
-    window.addEventListener('load', fetchAndDisplayGif);
+    window.addEventListener("load", fetchAndDisplayGif);
 
     // Or call the function on button click (assuming your button has an ID of "apiButton")
     const button = document.querySelector("#apiButton");
     button.addEventListener("click", fetchAndDisplayGif);
-
-
-
+    searchButton.addEventListener("click", searchAndDisplayGif);
+    resetButton.addEventListener("click", (e) => {
+      searchInput.value = ""
+    })
   </script>
-
 </body>
 
 </html>
