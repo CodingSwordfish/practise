@@ -3,27 +3,71 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .gif-container {
+      width: 300px;
+      /* Adjust this width as needed */
+      height: 200px;
+      /* Adjust this height as needed */
+      display: flex;
+      /* Use flexbox for layout */
+      justify-content: center;
+      /* Center the GIF horizontally */
+      align-items: center;
+      /* Center the GIF vertically */
+
+    }
+
+    .gif-container img {
+      max-width: 100%;
+      /* Allow the GIF to scale down to fit the container */
+      max-height: 100%;
+      /* Allow the GIF to scale down to fit the container */
+    }
+  </style>
 </head>
 
 <body>
-  <img src="#">
+  <div class="gif-container">
+    <img src="#" alt="gif">
+  </div>
   <button type="button" id="apiButton">CLICK TO CHANGE GIF</button>
   <script>
-    const img = document.querySelector('img');
-   const button = document.querySelector("#apiButton")
-  button.addEventListener("click",(e)=>{
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=3AwGiMq6h7HRt7YIYDeQsbx7hPUiTVOk&s=cats', {mode: 'cors'})
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(response) {
-      img.src = response.data.images.original.url;
-    });
-  })
-    
-  </script>
+    function fetchAndDisplayGif() {
+      const img = document.querySelector('img');
 
+      fetch('https://api.giphy.com/v1/gifs/translate?api_key=3AwGiMq6h7HRt7YIYDeQsbx7hPUiTVOk&s=cats', { mode: 'cors' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`API request failed with status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(function (response) {
+
+          img.src = response.data.images.original.url;
+        })
+
+        .catch(error => {
+          console.error('Error fetching GIF:', error);
+          // Handle the error here, e.g. display an error message to the user
+          img.src = 'sonic.jpg'; // Set a placeholder image
+        });
+    }
+
+    // Call the function on window load
+    window.addEventListener('load', fetchAndDisplayGif);
+
+    // Or call the function on button click (assuming your button has an ID of "apiButton")
+    const button = document.querySelector("#apiButton");
+    button.addEventListener("click", fetchAndDisplayGif);
+
+
+
+  </script>
 
 </body>
 
